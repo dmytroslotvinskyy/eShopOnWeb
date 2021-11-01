@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  namespace: apache
+  labels:
+    name: myingress
+spec:
+  rules:
+  - host: kubernetes.docker.internal
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: eshopappservice
+            port: 
+              number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: apache
+  name: my-ingress-service
+spec:
+  selector:
+    app: myingress
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+
